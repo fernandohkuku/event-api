@@ -1,12 +1,18 @@
 import { NextFunction } from "express";
 import mongoose, { Schema, Document } from "mongoose";
 import bcrypt from 'bcryptjs'
+import { User } from ".";
 
 export interface User extends Document{
     name:string;
     username:string;
-    lastName:string;
-    password:string
+    lastName?:string;
+    email:string;
+    password:string;
+}
+
+export interface IUser extends User{
+    comparePassword(password: string): boolean; 
 }
 
 
@@ -32,15 +38,23 @@ userSchema.pre<User>("save", async function(next){
     }
 });
 
-
-userSchema.methods.comparePassword =async function(attemp:string, next:NextFunction){
+userSchema.method("comparePassword", async function(attemp:string, next:NextFunction){
     try {
-        
-        return await bcrypt.compare(attemp,this.get("password"))
+        return  bcrypt.compare(attemp,this.get("password"))
     } catch (error:any) {
         next(error)
     }
-}
+})
+
+// userSchema.methods.comparePassword = function(attemp:string, next:NextFunction){
+//     try {
+//         return  bcrypt.compare(attemp,this.get("password"))
+//     } catch (error:any) {
+//         next(error)
+//     }
+// }
 
 
-export default mongoose.model('User', userSchema);
+
+
+export default mongoose.model<IUser>('User', userSchema);

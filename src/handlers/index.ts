@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { ErrorStatus } from "../interface/ErrorStatus";
+import { ErrorStatus } from "../interfaces/ErrorStatus";
 
 
 export const notFound = (req, res, next) =>{
