@@ -1,0 +1,32 @@
+{
+  "name": "eventAPI",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "author": "Fernando Ku Ku",
+  "license": "MIT",
+  "devDependencies": {
+    "tslint": "^6.1.3",
+    "typescript": "^4.2.3"
+  },
+  "scripts": {
+    "start": "nodemon index.ts",
+    "test": "echo 'error '"
+  },
+  "dependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/express": "^4.17.11",
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/mongoose": "^5.10.3",
+    "@types/nodemon": "^1.19.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.12.0",
+    "nodemon": "^2.0.7",
+    "ts-node": "^9.1.1",
+    "tsc": "^1.20150623.0"
+  }
+}
