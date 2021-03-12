@@ -16,6 +16,6 @@ export const errorHandler =(error:ErrorStatus, req:Request, res:Response, next:N
 }
 
 export * from './user';
-
+export * from './event';
 
 

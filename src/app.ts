@@ -13,7 +13,8 @@ export default class Server{
     public app:Application;
     public port:string;
     private api_url = {
-        user:'/api/user'
+        user:'/api/user',
+        event:'/api/event'
     }
 
     constructor(
@@ -33,7 +34,8 @@ export default class Server{
     }
 
     routes(){
-        this.app.use(this.api_url.user, router.user_route)
+        this.app.use(this.api_url.user, router.user_route);
+        this.app.use(this.api_url.event, router.event_route);
     }
 
     cors(){
@@ -57,7 +59,7 @@ export default class Server{
     start(
         callback:Function
     ) {
-        this.app.listen(this.port, ()=> console.log(`started on port 3700`));
+        this.app.listen(this.port, ()=> console.log(`started on port locahost:${this.port}`));
     }
 
 

@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import userSchema from './user'
+import eventSchema from './event'
 
 mongoose.set("debug", true);
 
@@ -9,3 +10,5 @@ mongoose.connect(
 )
 
 export const User = userSchema;
+export const Event = eventSchema;
+

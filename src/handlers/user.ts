@@ -10,7 +10,8 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
         const user = await db.User.create(userDTO);
 
         res.status(201).json({
-            message: "El usuario ha sido creado",
+            message: "the user was created",
+            success:true,
             user
         });
 
@@ -55,10 +56,12 @@ export const getUsers = async (req: Request, res: Response, next: NextFunction) 
 
         const { page, limit } = req.query;
 
+        const {id} = res.locals.decode
+
         const per_page: number = limit ? parseInt(limit.toString()) : 20;
 
         const count = await db.User.find().count();
-        const users = await db.User.find().select("-password")
+        const users = await db.User.find({_id:{$ne:id}}).select("-password").populate("events")
             .limit(per_page)
             .skip(per_page * (Number(page) - 1))
             .sort({ created: -1 });

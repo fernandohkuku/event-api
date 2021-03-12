@@ -10,6 +10,7 @@ export interface User extends Document{
     email:string;
     password:string;
     created:Date;
+    events:mongoose.Schema.Types.ObjectId[]
 }
 
 export interface IUser extends User{
@@ -25,7 +26,10 @@ const userSchema:Schema = new mongoose.Schema<User>({
     created:{
         type:Date,
         default:Date.now
-    }
+    },
+    events:[{
+        type:mongoose.Schema.Types.ObjectId, ref:'Event'
+    }]
 })
 
 
