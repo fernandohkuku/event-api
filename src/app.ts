@@ -2,8 +2,9 @@
 import express, {Application} from 'express';
 import cors from 'cors'
 import bodyParser  from 'body-parser'
-import * as router from './routes'
+import queryParser from 'express-query-int'
 import { errorHandler, notFound } from './handlers';
+import * as router from './routes'
 
 
 
@@ -41,6 +42,10 @@ export default class Server{
 
     bodyParser(){
         this.app.use(bodyParser.json());
+    }
+
+    queryInt(){
+        this.app.use(queryParser());
     }
 
     handlers(){

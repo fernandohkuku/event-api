@@ -9,6 +9,7 @@ export interface User extends Document{
     lastName?:string;
     email:string;
     password:string;
+    created:Date;
 }
 
 export interface IUser extends User{
@@ -20,7 +21,11 @@ const userSchema:Schema = new mongoose.Schema<User>({
     name:String,
     lastName:String,
     password:String,
-    username:{type:String, required:true, unique:true}
+    username:{type:String, required:true, unique:true},
+    created:{
+        type:Date,
+        default:Date.now
+    }
 })
 
 

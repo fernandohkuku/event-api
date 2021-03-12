@@ -50,6 +50,32 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 }
 
 
+export const getUsers = async(req:Request, res:Response, next:NextFunction) =>{
+    try {
+
+        const {page, limit} =  req.query;
+
+        const per_page:number =  limit? parseInt(limit.toString()) : 20;
+
+        const count = await db.User.find().count();
+        const users = await db.User.find().select("-password -__v")
+        .limit(per_page)
+        .skip(per_page * (Number(page) - 1))
+        .sort({created:-1});
+
+        res.status(200).json({
+            total_pages:parseInt((count / per_page).toFixed()),
+            page:Number(page ? page : 1),
+            total_records:users.length,
+            users
+        })
+
+    } catch (error) {
+        next(error);
+    }
+}
+
+
 export const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { user_id } = req.params;
