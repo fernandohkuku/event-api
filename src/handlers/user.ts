@@ -26,47 +26,47 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
 export const login = async (req: Request, res: Response, next: NextFunction) => {
 
     try {
-        
+
         const { username, password } = req.body as User
-        
+
         const user = await db.User.findOne({ username: username });
 
         const isUserValid = await user.comparePassword(password);
 
-        const {id, name} = user;
-        
-        if(isUserValid){
-            const token = jwt.sign({id, name}, process.env.SECRET);
+        const { id, name } = user;
+
+        if (isUserValid) {
+            const token = jwt.sign({ id, name }, process.env.SECRET);
             res.status(200).json({
                 id, name, token
             })
         }
 
     } catch (error) {
-        error.status =400;
-        error.message ="username/password incorrect"
+        error.status = 400;
+        error.message = "username/password incorrect"
         next(error)
     }
 }
 
 
-export const getUsers = async(req:Request, res:Response, next:NextFunction) =>{
+export const getUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {
 
-        const {page, limit} =  req.query;
+        const { page, limit } = req.query;
 
-        const per_page:number =  limit? parseInt(limit.toString()) : 20;
+        const per_page: number = limit ? parseInt(limit.toString()) : 20;
 
         const count = await db.User.find().count();
-        const users = await db.User.find().select("-password -__v")
-        .limit(per_page)
-        .skip(per_page * (Number(page) - 1))
-        .sort({created:-1});
+        const users = await db.User.find().select("-password")
+            .limit(per_page)
+            .skip(per_page * (Number(page) - 1))
+            .sort({ created: -1 });
 
         res.status(200).json({
-            total_pages:parseInt((count / per_page).toFixed()),
-            page:Number(page ? page : 1),
-            total_records:users.length,
+            total_pages: parseInt((count / per_page).toFixed()),
+            page: Number(page ? page : 1),
+            total_records: users.length,
             users
         })
 
@@ -75,12 +75,32 @@ export const getUsers = async(req:Request, res:Response, next:NextFunction) =>{
     }
 }
 
+export const getUser = async (req: Request, res: Response, next: NextFunction) => {
+
+    try {
+        const { user_id } = req.params;
+
+        const user = await db.User.findById(user_id).select("-password");
+
+        if(!user) throw new Error("this user not exist")
+
+        res.status(200).json(
+            user
+        )
+
+    } catch (error) {
+        error.status = 400
+        next(error);
+    }
+
+}
+
 
 export const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { user_id } = req.params;
 
-        const user = await db.User.findById(user_id);
+        const user = await db.User.findById(user_id)
 
         user.remove();
 

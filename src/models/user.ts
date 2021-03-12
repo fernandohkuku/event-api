@@ -29,6 +29,7 @@ const userSchema:Schema = new mongoose.Schema<User>({
 })
 
 
+
 userSchema.pre<User>("save", async function(next){
     try {
         if(!this.isModified("password")){
@@ -51,13 +52,15 @@ userSchema.method("comparePassword", async function(attemp:string, next:NextFunc
     }
 })
 
-// userSchema.methods.comparePassword = function(attemp:string, next:NextFunction){
-//     try {
-//         return  bcrypt.compare(attemp,this.get("password"))
-//     } catch (error:any) {
-//         next(error)
-//     }
-// }
+
+userSchema.set('toJSON',{
+    virtuals:true,
+    transform:(doc, ret, options)=>{
+        ret.id = ret._id
+        delete ret._id;
+        delete ret.__v;
+    }
+})
 
 
 
