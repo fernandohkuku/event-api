@@ -5,7 +5,7 @@ import mongoose, { Schema, Document } from "mongoose";
 export interface IEvent extends Document{
     name:string;
     description:string;
-    date:Date;
+    date:string;
     user:mongoose.Schema.Types.ObjectId
 }
 

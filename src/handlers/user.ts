@@ -41,6 +41,8 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
             res.status(200).json({
                 id, name, token
             })
+        }else{
+            throw new Error();
         }
 
     } catch (error) {
@@ -60,8 +62,9 @@ export const getUsers = async (req: Request, res: Response, next: NextFunction) 
 
         const per_page: number = limit ? parseInt(limit.toString()) : 20;
 
+        // {_id:{$ne:id}}
         const count = await db.User.find().count();
-        const users = await db.User.find({_id:{$ne:id}}).select("-password").populate("events")
+        const users = await db.User.find().select("-password").populate("events")
             .limit(per_page)
             .skip(per_page * (Number(page) - 1))
             .sort({ created: -1 });
@@ -72,7 +75,6 @@ export const getUsers = async (req: Request, res: Response, next: NextFunction) 
             total_records: users.length,
             users
         })
-
     } catch (error) {
         next(error);
     }
