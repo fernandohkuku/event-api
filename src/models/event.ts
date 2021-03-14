@@ -10,11 +10,7 @@ export interface IEvent extends Document{
 }
 
 const eventSchema:Schema = new mongoose.Schema<IEvent>({
-    name:{
-        type:String,
-        unique:true,
-        required:true
-    },
+    name:String,
     description:String,
     date:Date,
     user:{
